@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOFUNY — Write a More Colorful Day</title>
+<meta name="description" content="MOFUNY mixed media sketchbooks, ballpoint and gel pens, drawing pens, brush pens, erasers and pencil cases. Free US shipping.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+/* ============================================================
+   EDIT HERE — everything you normally need to change.
+   paypalClientId: PayPal Developer > Apps & Credentials > Live
+   price:          the price shown on the site, in USD
+   image:          main photo; extra photos are found automatically
+                   (name-2.jpg, name-3.jpg ... up to 6)
+   To remove a product or a color, delete its { ... } block.
+   ============================================================ */
+const CONFIG = {
+  brand: "MOFUNY",
+  email: "hello@example.com",
+  paypalClientId: "",
+  products: [
+    {
+      id: "sketchbook",
+      name: "Mixed Media Sketchbook",
+      intro: "Acid-free paper heavy enough for markers and light washes, smooth enough for pencil and ink.",
+      optionLabel: "Cover",
+      sizeLabel: "Size",
+      styles: [
+        { id:"mofuny-mixed-media", label:"Burgundy", swatch:"#5a2a22", image:"images/mofuny-mixed-media.jpg",
+          specs:[["Binding","Top spiral, lies flat"],["Pages","Micro-perforated for clean removal"],["Best for","Watercolor, marker, ink, pencil"]],
+          sizes:[ {label:"9 × 12 in", price:28.99, specs:[["Sheets","60"],["Paper","98 lb / 160 gsm"]]},
+                  {label:"9 × 12 in, 2-pack", price:24.99, specs:[["Sheets","60 each"],["Paper","98 lb / 160 gsm"]]},
+                  {label:"8.5 × 11 in", price:20.99, specs:[["Sheets","50"],["Paper","110 lb / 180 gsm"]]},
+                  {label:"11 × 14 in", price:27.99, specs:[["Sheets","50"],["Paper","110 lb / 180 gsm"]]} ] }
+      ]
+    },
+    {
+      id: "notes",
+      name: "NOTE 12 Sticky Notes Set",
+      intro: "Twelve pads in three sizes, for notes, to-do lists and marking pages.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-sticky-notes", label:"12 pads", swatch:"#cfe0d4", image:"images/mofuny-sticky-notes.jpg", price:15.99,
+          specs:[["Large square","7.6 × 7.6 cm (3 × 3 in)"],["Medium rectangle","7.6 × 5.1 cm (3 × 2 in)"],["Page flags","4.4 × 1.2 cm (1.7 × 0.5 in)"],["Colors","6 pastel shades"]] }
+      ]
+    },
+    {
+      id: "envelopes",
+      name: "Pastel Envelope Set",
+      intro: "Soft-toned envelopes with peel-and-seal flaps and matching seal stickers.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-envelopes", label:"Pastel mix", swatch:"#e3a9a6", image:"images/mofuny-envelopes.jpg", price:12.99,
+          specs:[["Size","18.4 × 13.3 cm, fits 5 × 7 in cards"],["Closure","Peel-and-seal strip"],["Included","Envelopes in six pastel shades plus seal stickers"],["Best for","Cards, letters, small keepsakes"]] }
+      ]
+    },
+    {
+      id: "ballpoint",
+      name: "Retractable Ballpoint Pens",
+      intro: "One-click retractable pens with a soft grip and quick-drying 1.0mm ink.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-pens-soft", label:"Soft colors, 4 pack", swatch:"#e8b9b0", image:"images/mofuny-pens-soft.jpg", price:12.99,
+          specs:[["In the set","Cream / black ink, soft blue / blue ink, blush pink / red ink, sage green / green ink"],["Point","1.0 mm medium"],["Ink","Quick-drying oil-based"],["Grip","Soft textured comfort grip"]] },
+        { id:"mofuny-pens-4", label:"Classic colors, 4 pack", swatch:"#1f3550", image:"images/mofuny-pens-4.jpg", price:12.99,
+          specs:[["In the set","1 black, 1 blue, 1 red, 1 green"],["Point","1.0 mm medium"],["Ink","Quick-drying oil-based"],["Grip","Soft textured comfort grip"]] },
+        { id:"mofuny-pens-12", label:"Classic colors, 12 pack", swatch:"#2b4a8c", image:"images/mofuny-pens-12.jpg", price:17.99,
+          specs:[["In the set","4 black, 4 blue, 2 red, 2 green"],["Point","1.0 mm medium"],["Ink","Quick-drying oil-based"],["Grip","Soft textured comfort grip"]] }
+      ]
+    },
+    {
+      id: "gel",
+      name: "Gel Pens, 12 Colors",
+      intro: "Twelve soft-toned gel pens for notes, planners and journaling.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-gel-pens", label:"12 colors", swatch:"#d98fa8", image:"images/mofuny-gel-pens.jpg", price:15.99,
+          specs:[["Colors","Black, red, pink, coral, orange, yellow, light green, green, mint, blue, purple, gray"],["Point","0.7 mm fine"],["Ink","Vibrant gel ink"],["Grip","Comfort grip"]] }
+      ]
+    },
+    {
+      id: "mech",
+      name: "MECH 6 Mechanical Pencil Set",
+      intro: "Six pastel mechanical pencils with refills and erasers included.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-mech-pencils", label:"6 pencils + extras", swatch:"#b3a6cf", image:"images/mofuny-mech-pencils.jpg", price:17.99,
+          specs:[["Pencils","6 × 0.5 mm, in six colors"],["Refills","2 tubes of HB lead, 0.5 mm, 60 pieces each"],["Erasers","2"],["Best for","Sketching, notes, study"]] }
+      ]
+    },
+    {
+      id: "highlight",
+      name: "HIGHLIGHT 6 Pastel Highlighter Set",
+      intro: "Six soft highlighters that mark without shouting.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-highlighters", label:"6 colors", swatch:"#efd190", image:"images/mofuny-highlighters.jpg", price:15.99,
+          specs:[["Colors","Cream, blush pink, sage green, sky blue, lavender, lemon yellow"],["Tip","Chisel tip, 1–4 mm"],["Ink","Smooth flowing, non-toxic and odorless"],["Best for","Study notes, planners, journaling"]] }
+      ]
+    },
+    {
+      id: "drawing",
+      name: "LINE 8 Precision Drawing Pens",
+      intro: "Eight nib sizes for technical drawing, sketching and lettering.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-drawing-pens", label:"8 pens", swatch:"#8fa27a", image:"images/mofuny-drawing-pens.jpg", price:18.99,
+          specs:[["Nibs","005, 01, 02, 03, 04, 05, 08 and a brush tip"],["Ink","Black pigment ink"],["Finish","Waterproof when dry, fade resistant"],["Best for","Line work, hatching, lettering"]] }
+      ]
+    },
+    {
+      id: "brush",
+      name: "BLEND 12 Dual Tip Watercolor Brush Pens",
+      intro: "Brush tip on one end, fine tip on the other. Twelve colors, twenty-four tips.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-brush-pens", label:"12 colors", swatch:"#d98a6a", image:"images/mofuny-brush-pens.jpg", price:27.99,
+          specs:[["Colors","12"],["Tips","Brush tip for coloring and lettering, fine tip for detail"],["Ink","Water-based, blendable"],["Best for","Watercolor effects, lettering, coloring"]] }
+      ]
+    },
+    {
+      id: "erasers",
+      name: "ERASE 6 Artist Eraser Collection",
+      intro: "Six erasers in three shapes: soft, precision and kneaded.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-erasers", label:"6 erasers", swatch:"#c9b9a8", image:"images/mofuny-erasers.jpg", price:16.99,
+          specs:[["In the set","2 soft, 2 precision, 2 kneaded"],["Soft","Everyday writing"],["Precision","Detailed work"],["Kneaded","Sketching and shading"]] }
+      ]
+    },
+    {
+      id: "clips",
+      name: "CLIP 60 Pastel Clip Set",
+      intro: "Sixty paper clips in six pastel colors, in a reusable storage case.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-clips", label:"60 clips", swatch:"#a3c4dc", image:"images/mofuny-clips.jpg", price:17.99,
+          specs:[["Pieces","60"],["Colors","6 pastel shades"],["Storage","Divided case with lid"],["Best for","Notes, planners, filing"]] }
+      ]
+    },
+    {
+      id: "glue",
+      name: "DOT 6 Mini Glue Tape Set",
+      intro: "Six mini glue tape runners that stick without the mess of liquid glue.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-glue-tape", label:"6 runners", swatch:"#8fa27a", image:"images/mofuny-glue-tape.jpg", price:12.99,
+          specs:[["Pieces","6, in cream, blush pink, sage green, sky blue, lavender and lemon yellow"],["Adhesive","Strong, clean and mess-free"],["Use","Smooth roll-on application"],["Best for","Journaling, scrapbooking, cards"]] }
+      ]
+    },
+    {
+      id: "washi",
+      name: "WASHI 8 Decorative Masking Tape Set",
+      intro: "Eight rolls in three widths: six solid pastels and two patterns.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-washi", label:"8 rolls", swatch:"#e8b9b0", image:"images/mofuny-washi.jpg", price:17.99,
+          specs:[["Rolls","8: six pastel colors and two patterns"],["Widths","10, 15 and 20 mm"],["Material","Easy to tear and reposition, non-toxic"],["Best for","Journaling, gift wrap, labelling"]] }
+      ]
+    },
+    {
+      id: "tools",
+      name: "TOOL 4 Mini Stationery Tool Set",
+      intro: "Four desk essentials sized for a pencil case.",
+      optionLabel: "Set",
+      styles: [
+        { id:"mofuny-tool-set", label:"4 tools", swatch:"#e3a9a6", image:"images/mofuny-tool-set.jpg", price:17.99,
+          specs:[["In the set","15 cm ruler, mini scissors, pencil sharpener with container, mini stapler with staples"],["Scissors","Rounded tip for safer use"],["Size","Compact and portable"],["Best for","School, office, journaling"]] }
+      ]
+    },
+    {
+      id: "case",
+      name: "Pencil Case",
+      intro: "A structured zip case with a carry handle and a front pocket, in six colors.",
+      optionLabel: "Color",
+      styles: [
+        { id:"mofuny-case-sage", label:"Sage green", swatch:"#8fa27a", image:"images/mofuny-case-sage.jpg", price:17.99,
+          specs:[["Closure","Double zip, front pocket"],["Carry","Top handle and side loop"],["Fits","Pens, pencils, erasers and small tools"]] },
+        { id:"mofuny-case-blush", label:"Blush pink", swatch:"#e3a9a6", image:"images/mofuny-case-blush.jpg", price:17.99,
+          specs:[["Closure","Double zip, front pocket"],["Carry","Top handle and side loop"],["Fits","Pens, pencils, erasers and small tools"]] },
+        { id:"mofuny-case-gray", label:"Cool gray", swatch:"#a9adb2", image:"images/mofuny-case-gray.jpg", price:17.99,
+          specs:[["Closure","Double zip, front pocket"],["Carry","Top handle and side loop"],["Fits","Pens, pencils, erasers and small tools"]] },
+        { id:"mofuny-case-lavender", label:"Lavender", swatch:"#b3a6cf", image:"images/mofuny-case-lavender.jpg", price:17.99,
+          specs:[["Closure","Double zip, front pocket"],["Carry","Top handle and side loop"],["Fits","Pens, pencils, erasers and small tools"]] },
+        { id:"mofuny-case-lemon", label:"Lemon yellow", swatch:"#efd190", image:"images/mofuny-case-lemon.jpg", price:17.99,
+          specs:[["Closure","Double zip, front pocket"],["Carry","Top handle and side loop"],["Fits","Pens, pencils, erasers and small tools"]] },
+        { id:"mofuny-case-sky", label:"Sky blue", swatch:"#a3c4dc", image:"images/mofuny-case-sky.jpg", price:17.99,
+          specs:[["Closure","Double zip, front pocket"],["Carry","Top handle and side loop"],["Fits","Pens, pencils, erasers and small tools"]] }
+      ]
+    }
+  ]
+};
+
+</script>
+<style>
+:root{
+  --paper:#ffffff;
+  --ink:#2a1d1a;
+  --muted:#6f625d;
+  --maroon:#5a2a22;
+  --ochre:#d9a441;
+  --rust:#c96a3c;
+  --river:#4f8199;
+  --sage:#8a9f74;
+  --wash:#f5f0ea;
+  --display:"Young Serif", Georgia, serif;
+  --sans:"Figtree", -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font:400 1rem/1.6 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--river);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+
+header{position:absolute;top:0;left:0;right:0;z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
+.logo{font:600 1.25rem/1 var(--sans);letter-spacing:.16em;text-decoration:none;color:var(--maroon)}
+nav a{font-size:.95rem;text-decoration:none;color:var(--muted);margin-left:28px}
+nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;cursor:cell}
+#paint{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.hero .wrap{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;min-height:100vh;padding-top:96px;padding-bottom:72px;pointer-events:none}
+.hero .wrap a,.hero .wrap button{pointer-events:auto}
+.hero h1{font:400 clamp(2.6rem,5.8vw,4.9rem)/1.04 var(--display);color:var(--maroon);max-width:11ch}
+.hero h1 .ln{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .ln>span{display:block;transform:translateY(110%);animation:rise 1.05s cubic-bezier(.2,.7,.1,1) forwards}
+.hero h1 .ln:nth-child(2)>span{animation-delay:.1s}
+.hero h1 .ln:nth-child(3)>span{animation-delay:.2s}
+@keyframes rise{to{transform:none}}
+.hero p.sub{margin-top:24px;font-size:1.125rem;color:var(--muted);max-width:40ch;opacity:0;animation:fade .8s .55s forwards}
+.buy{display:flex;align-items:center;gap:24px;margin-top:36px;flex-wrap:wrap;opacity:0;animation:fade .8s .7s forwards}
+.hero .note{opacity:0;animation:fade .8s .8s forwards}
+@keyframes fade{to{opacity:1}}
+.price{font:400 2rem/1 var(--display)}
+.btn{display:inline-block;font:600 1rem/1 var(--sans);padding:18px 32px;border-radius:999px;background:var(--maroon);color:#fff;text-decoration:none;border:0;cursor:pointer;transition:transform .25s cubic-bezier(.3,1.6,.5,1),box-shadow .25s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px rgba(90,42,34,.55)}
+.btn[aria-disabled="true"]{background:#b9aaa4;cursor:not-allowed;box-shadow:none;transform:none}
+.note{font-size:.88rem;color:var(--muted);margin-top:14px}
+.painthint{position:absolute;z-index:2;left:50%;bottom:22px;transform:translateX(-50%);font-size:.85rem;color:var(--muted);background:rgba(255,255,255,.75);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:8px 16px;border-radius:999px;display:flex;gap:14px;align-items:center;white-space:nowrap}
+.painthint button{font:600 .85rem/1 var(--sans);background:none;border:0;color:var(--maroon);cursor:pointer;padding:0;display:none}
+.painthint.dirty button{display:inline}
+.swatches{display:flex;gap:6px}
+.swatches i{width:10px;height:10px;border-radius:50%}
+
+.artwrap{perspective:1400px;display:grid;place-items:center}
+.art{width:min(460px,84vw);aspect-ratio:1/1;display:grid;place-items:center;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.7,.1,1)}
+.float{animation:float 6s ease-in-out infinite;width:100%;height:100%;display:grid;place-items:center}
+@keyframes float{50%{transform:translateY(-12px)}}
+.art img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 30px 28px rgba(42,29,26,.25))}
+.book{width:68%;aspect-ratio:3/4;background:var(--maroon);border-radius:4px;position:relative;box-shadow:0 36px 50px -20px rgba(42,29,26,.5),inset 0 0 0 1px rgba(255,255,255,.05);display:flex;flex-direction:column;align-items:center;padding:12% 11% 9%;color:#f4ece4}
+.book .rings{position:absolute;left:6%;right:6%;top:-14px;height:28px;display:flex;justify-content:space-between}
+.book .rings i{width:8px;height:28px;border-radius:5px;border:2.5px solid #8f8f95;border-bottom-color:#c9c9cc}
+.book h4{font:400 clamp(1.2rem,2.6vw,1.7rem)/1 var(--display)}
+.book .spec{font-size:.62rem;opacity:.75;margin-top:8px;letter-spacing:.04em}
+.book canvas{flex:1;width:100%;margin:9% 0 7%;background:#f2e9dc;border-radius:1px}
+.book .foot{width:100%;display:flex;justify-content:space-between;font-size:.62rem;opacity:.75}
+
+/* media */
+.media{background:var(--wash);padding:104px 0}
+h2.sec{font:400 clamp(1.9rem,3.4vw,2.7rem)/1.12 var(--display);color:var(--maroon)}
+.media .lead{max-width:56ch;margin-top:16px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:48px}
+.cols h3{font:600 1.05rem/1.3 var(--sans);display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.dot{width:14px;height:14px;border-radius:50%;flex:none}
+.cols ul{list-style:none;padding:0;border-top:1px solid #e2d8cf}
+.cols li{position:relative;display:flex;justify-content:space-between;gap:16px;padding:15px 12px;border-bottom:1px solid #e2d8cf;isolation:isolate}
+.cols li::before{content:"";position:absolute;inset:6px -4px;z-index:-1;background:var(--c);opacity:.28;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40' preserveAspectRatio='none'%3E%3Cpath d='M4 22C40 6 90 10 150 8s120 4 170 2 60 6 76 10c-10 8-40 14-90 14s-140-2-200 0S20 40 6 32z'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+          mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40' preserveAspectRatio='none'%3E%3Cpath d='M4 22C40 6 90 10 150 8s120 4 170 2 60 6 76 10c-10 8-40 14-90 14s-140-2-200 0S20 40 6 32z'/%3E%3C/svg%3E") center/100% 100% no-repeat;
+  clip-path:inset(0 100% 0 0);transition:clip-path .55s cubic-bezier(.6,0,.2,1)}
+.cols li:hover::before{clip-path:inset(0 0 0 0)}
+.cols li span:last-child{color:var(--muted);text-align:right}
+
+/* specs + about */
+.specs{padding:104px 0}
+.specs .wrap{display:grid;grid-template-columns:1fr 1.3fr;gap:64px;align-items:start}
+dl{display:grid;grid-template-columns:max-content 1fr;gap:0 32px}
+dt,dd{padding:13px 0;border-bottom:1px solid #eee5dd}
+dt{color:var(--muted)}
+.bigtype{font:400 clamp(4.5rem,11vw,9rem)/.9 var(--display);color:var(--maroon);letter-spacing:-.02em}
+.bigtype small{display:block;font:500 1rem/1.4 var(--sans);color:var(--muted);letter-spacing:0;margin-top:14px}
+.about{padding:0 0 104px}
+.about .wrap{border-top:1px solid #eee5dd;padding-top:72px;display:grid;grid-template-columns:1fr 1.3fr;gap:64px}
+.about p{max-width:58ch;font-size:1.1rem;line-height:1.78}
+.about p+p{margin-top:1em}
+
+.policies{background:var(--wash);padding:96px 0}
+.policies .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;margin-top:40px}
+.policies h3{font:600 1rem/1.3 var(--sans);margin-bottom:10px}
+.policies p{font-size:.95rem;color:var(--muted);max-width:36ch}
+.policies p+p{margin-top:.8em}
+footer{padding:36px 0;font-size:.875rem;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+.rv{opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.1,1)}
+.rv.in{opacity:1;transform:none}
+
+@media (max-width:900px){
+  nav a:not(:last-child){display:none}
+  .hero .wrap{grid-template-columns:1fr;min-height:0;padding-top:104px;padding-bottom:96px;gap:24px}
+  .cols,.specs .wrap,.about .wrap,.policies .grid{grid-template-columns:1fr;gap:32px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  .rv{opacity:1;transform:none}
+}
+.pp{max-width:340px;min-height:52px;flex:1 1 280px}
+.thanks{max-width:340px;padding:14px 16px;border-left:3px solid currentColor;font-size:.95rem}
+fieldset.opt{border:0;padding:0;margin:30px 0 0;min-width:0;opacity:0;animation:fade .8s .65s forwards}
+fieldset.opt legend{font-size:.9rem;color:var(--muted);margin-bottom:10px;padding:0}
+fieldset.opt legend b{color:var(--ink);font-weight:500}
+.sizes{display:flex;flex-wrap:wrap;gap:8px}
+.size{font:500 .92rem/1 var(--sans);padding:12px 16px;border:1px solid #e0d5cc;border-radius:999px;background:rgba(255,255,255,.85);color:var(--ink);cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.size:hover{border-color:var(--maroon)}
+.size[aria-pressed="true"]{background:var(--maroon);border-color:var(--maroon);color:#fff}
+.buy{margin-top:28px}
+.gal{margin-top:14px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.gal button{width:60px;height:60px;padding:0;border:1px solid #e0d5cc;background:rgba(255,255,255,.9);border-radius:6px;cursor:pointer;overflow:hidden;transition:border-color .2s}
+.gal button img{width:100%;height:100%;object-fit:contain}
+.gal button:hover{border-color:var(--maroon)}
+.gal button[aria-pressed="true"]{border-color:var(--maroon);box-shadow:0 0 0 1px var(--maroon)}
+.gal:empty{display:none}
+
+
+/* overview grid */
+.overview{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:34px 0 8px}
+.ov{display:flex;flex-direction:column;gap:10px;padding:14px;border:1px solid #eee5dd;border-radius:14px;background:#fff;text-decoration:none;color:inherit;transition:border-color .25s,transform .25s,box-shadow .25s}
+.ov:hover{border-color:var(--maroon);transform:translateY(-3px);box-shadow:0 14px 28px -20px rgba(42,29,26,.5)}
+.ov .thumb{aspect-ratio:1/1;border-radius:9px;background:var(--wash);display:grid;place-items:center;overflow:hidden}
+.ov .thumb img{width:100%;height:100%;object-fit:contain;padding:6%}
+.ov .nm{font-weight:500;line-height:1.3;font-size:.95rem}
+.ov .pr{color:var(--muted);font-size:.9rem;margin-top:auto}
+.group{font:400 1.3rem/1 var(--display);color:var(--maroon);margin:52px 0 -8px;padding-top:26px;border-top:1px solid #eee5dd}
+.group+.cfg{border-top:0}
+@media (max-width:900px){.overview{grid-template-columns:1fr 1fr;gap:12px}}
+
+/* shop */
+#shop{padding:96px 0 40px}
+.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:24px;padding-bottom:8px}
+.sectionhead h2{font:400 clamp(2rem,4vw,3rem)/1.05 var(--display);color:var(--maroon)}
+.sectionhead p{color:var(--muted);max-width:34ch}
+.cfg{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:start;padding:56px 0;border-top:1px solid #eee5dd}
+.cfg .shot-wrap{position:sticky;top:28px}
+.shot{aspect-ratio:1/1;display:grid;place-items:center;padding:6%;background:var(--wash);border-radius:14px;perspective:1200px;overflow:hidden}
+.shot .tilt{width:100%;height:100%;display:grid;place-items:center;transition:transform .5s cubic-bezier(.2,.7,.1,1);transform-style:preserve-3d}
+.shot img{width:100%;height:100%;object-fit:contain}
+.gal{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.gal button{width:64px;height:64px;padding:0;border:1px solid #e0d5cc;background:#fff;border-radius:8px;cursor:pointer;overflow:hidden;transition:border-color .2s}
+.gal button img{width:100%;height:100%;object-fit:contain}
+.gal button:hover{border-color:var(--maroon)}
+.gal button[aria-pressed="true"]{border-color:var(--maroon);box-shadow:0 0 0 1px var(--maroon)}
+.gal:empty{display:none}
+.cfg h3{font:400 clamp(1.6rem,3vw,2.3rem)/1.12 var(--display);color:var(--maroon)}
+.cfg .intro{color:var(--muted);margin-top:10px;max-width:46ch}
+.opt{margin-top:26px}
+.opt legend{font-size:.9rem;color:var(--muted);margin-bottom:10px;padding:0}
+.opt legend b{color:var(--ink);font-weight:500}
+fieldset{border:0;padding:0;margin:0;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;font:500 .9rem/1 var(--sans);padding:9px 15px 9px 11px;border:1px solid #e0d5cc;border-radius:999px;background:#fff;color:var(--ink);cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.chip i{width:15px;height:15px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);flex:none}
+.chip:hover{border-color:var(--maroon)}
+.chip[aria-pressed="true"]{border-color:var(--maroon);box-shadow:0 0 0 1px var(--maroon)}
+.cfg dl{margin:26px 0 0;display:grid;grid-template-columns:max-content 1fr;gap:0 28px}
+.cfg dt,.cfg dd{padding:11px 0;border-bottom:1px solid #eee5dd;font-size:.95rem}
+.cfg dt{color:var(--muted)}
+.cfg .price{margin:26px 0 18px;display:flex;align-items:baseline;gap:14px}
+.cfg .price span:first-child{font:400 1.8rem/1 var(--display)}
+.cfg .price small{font:400 .9rem/1 var(--sans);color:var(--muted)}
+.swap{animation:swap .45s cubic-bezier(.2,.7,.1,1)}
+@keyframes swap{from{opacity:0;transform:translateY(10px) scale(.98)}}
+.ph{width:72%;aspect-ratio:1/1;border-radius:12px;display:grid;place-items:center;text-align:center;font:400 1.1rem/1.3 var(--display);color:#fff;padding:12%}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.1,1)}
+.rv.in{opacity:1;transform:none}
+@media (max-width:900px){
+  .cfg{grid-template-columns:1fr;gap:26px;padding:40px 0}
+  .cfg .shot-wrap{position:relative;top:0}
+  .sectionhead{flex-direction:column;align-items:start}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">MOFUNY</a>
+    <nav><a href="#shop">Shop</a><a href="#about">About</a><a href="#help">Shipping &amp; returns</a><a href="#contact">Contact</a></nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero">
+    <canvas id="paint" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div>
+        <h1><span class="ln"><span>Write a more</span></span><span class="ln"><span>colorful</span></span><span class="ln"><span>day.</span></span></h1>
+        <p class="sub">Sketchbooks, pens and the small things that go with them. Made to be used every day, not saved for later.</p>
+        <div class="buy"><a class="btn" href="#shop">Shop everything</a></div>
+        <p class="note">Free US shipping. Pay with PayPal or card.</p>
+      </div>
+      <div class="artwrap">
+        <div class="art" id="art"><div class="float" id="float">
+          <img id="shot" alt="">
+        </div></div>
+      </div>
+    </div>
+    <div class="painthint" id="painthint">
+      <span class="swatches"><i style="background:var(--ochre)"></i><i style="background:var(--rust)"></i><i style="background:var(--river)"></i><i style="background:var(--sage)"></i></span>
+      <span id="hinttext">Click anywhere to add color</span>
+      <button type="button" id="wipe">Start over</button>
+    </div>
+  </section>
+
+  <section id="shop" aria-label="Products">
+    <div class="wrap">
+      <div class="sectionhead rv"><h2>Shop</h2><p>Everything ships free within the US.</p></div>
+      <div class="overview rv" id="overview"></div>
+      <div id="products"></div>
+    </div>
+  </section>
+
+  <section class="media" id="media">
+    <div class="wrap">
+      <h2 class="sec rv">What the sketchbook paper takes</h2>
+      <p class="lead rv">160–180gsm sits between a drawing pad and a watercolor block. It handles most media well; for heavy, soaking watercolor, a dedicated 300gsm paper will buckle less.</p>
+      <div class="cols">
+        <div class="rv">
+          <h3><span class="dot" style="background:var(--river)"></span>Wet media</h3>
+          <ul>
+            <li style="--c:var(--river)"><span>Watercolor</span><span>Light washes</span></li>
+            <li style="--c:var(--sage)"><span>Gouache</span><span>Thin to medium layers</span></li>
+            <li style="--c:var(--rust)"><span>Acrylic</span><span>Thin layers</span></li>
+            <li style="--c:#44403f"><span>Ink wash</span><span>Yes</span></li>
+          </ul>
+        </div>
+        <div class="rv">
+          <h3><span class="dot" style="background:var(--ochre)"></span>Dry media</h3>
+          <ul>
+            <li style="--c:#8c8c90"><span>Graphite and colored pencil</span><span>Yes</span></li>
+            <li style="--c:var(--ochre)"><span>Alcohol and water-based markers</span><span>Yes</span></li>
+            <li style="--c:#3b3634"><span>Charcoal and pastel</span><span>Yes</span></li>
+            <li style="--c:var(--maroon)"><span>Pen and fineliner</span><span>Yes</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap rv">
+      <h2 class="sec">About MOFUNY</h2>
+      <div>
+        <p>MOFUNY makes paper and pens for people who switch between media in the same session: a pencil sketch, then marker, then a wash of color on top.</p>
+        <p>We keep the range small and the colors soft, and we design each piece to be picked up every day.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="policies" id="help">
+    <div class="wrap">
+      <h2 class="sec">Shipping, returns and privacy</h2>
+      <div class="grid">
+        <div>
+          <h3>Shipping</h3>
+          <p>We ship to addresses in the United States. Orders leave our US warehouse within 1–2 business days and usually arrive in 3–5 business days.</p>
+          <p>Shipping is free on every order.</p>
+        </div>
+        <div>
+          <h3>Returns</h3>
+          <p>If something isn't right, contact us within 30 days of delivery. Unused items can be returned for a full refund; damaged or defective items are replaced or refunded at no cost to you.</p>
+        </div>
+        <div id="contact">
+          <h3>Privacy and contact</h3>
+          <p>Payments are processed securely by PayPal. You can pay with a PayPal account or any major card; we never see or store your card details, and we use your address only to deliver your order.</p>
+          <p>Questions: <a class="mail" href="#"></a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© <span id="yr"></span> MOFUNY. All rights reserved.</span><a class="mail" href="#"></a></div></footer>
+
+<script>/* ---------- PayPal checkout ---------- */
+/* slots: [{el, get: () => ({name, price})}] — price is read at click time, so it follows the current selection */
+function mountPayPal(slots){
+  const id = (CONFIG.paypalClientId || "").trim();
+  if (!id) {
+    slots.forEach(({el}) => el.innerHTML = '<a class="btn" aria-disabled="true" role="link"><span>Checkout opening soon</span></a>');
+    return;
+  }
+  const s = document.createElement("script");
+  s.src = "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(id) + "&currency=USD&components=buttons&enable-funding=card";
+  s.onload = () => slots.forEach(({el, get}) => {
+    paypal.Buttons({
+      style: { layout: "vertical", shape: "pill", label: "buynow", height: 48 },
+      createOrder: (d, actions) => { const it = get(); return actions.order.create({
+        purchase_units: [{ description: (CONFIG.brand + " " + it.name).slice(0,127), amount: { currency_code: "USD", value: Number(it.price).toFixed(2) } }],
+        application_context: { shipping_preference: "GET_FROM_FILE", brand_name: CONFIG.brand }
+      }); },
+      onShippingAddressChange: (data, actions) => {
+        if (data.shippingAddress && data.shippingAddress.countryCode !== "US") return actions.reject(data.errors && data.errors.COUNTRY_ERROR);
+      },
+      onApprove: (d, actions) => actions.order.capture().then(() => {
+        el.innerHTML = '<p class="thanks"><b>Order confirmed.</b> PayPal has emailed your receipt. We ship within 1–2 business days.</p>';
+      }),
+      onError: () => { el.insertAdjacentHTML("beforeend", '<p class="note">Payment didn\'t go through. Please try again or email ' + CONFIG.email + '.</p>'); }
+    }).render(el);
+  });
+  s.onerror = () => slots.forEach(({el}) => el.innerHTML = '<p class="note">Checkout couldn\'t load. Refresh the page or email ' + CONFIG.email + '.</p>');
+  document.head.appendChild(s);
+}
+(function(){
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fine = matchMedia("(pointer:fine)").matches;
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  const money = n => "$" + Number(n).toFixed(2);
+  const PALETTE = ["#d9a441","#c96a3c","#4f8199","#8a9f74","#a8543c","#6b9bb0"];
+
+  /* ---------- watercolor engine (layered, deformed polygons) ---------- */
+  const gauss = () => { let u=0,v=0; while(!u)u=Math.random(); while(!v)v=Math.random(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); };
+  function deform(pts, depth, amt){
+    for (let d=0; d<depth; d++){
+      const out=[];
+      for (let i=0;i<pts.length;i++){
+        const a=pts[i], b=pts[(i+1)%pts.length];
+        const len=Math.hypot(b.x-a.x,b.y-a.y), ang=Math.random()*Math.PI*2, m=gauss()*len*amt*a.v;
+        out.push(a, {x:(a.x+b.x)/2+Math.cos(ang)*m, y:(a.y+b.y)/2+Math.sin(ang)*m, v:(a.v+b.v)/2*(0.9+Math.random()*0.2)});
+      }
+      pts=out;
+    }
+    return pts;
+  }
+  function makeBloom(r){
+    const n=10, base=[];
+    for(let i=0;i<n;i++){const a=i/n*Math.PI*2; base.push({x:Math.cos(a)*r, y:Math.sin(a)*r, v:0.4+Math.random()*0.8});}
+    return deform(base,4,0.34);
+  }
+  function blooms(ctx){
+    const active=[];
+    function add(x,y,r,color,instant){
+      const shape=makeBloom(r), layers=[];
+      for(let i=0;i<42;i++) layers.push(deform(shape,3,0.32));
+      const b={x,y,color,layers,i:0};
+      if(instant){ while(b.i<layers.length) step(b); } else active.push(b);
+      return b;
+    }
+    function step(b){
+      const k=b.i/b.layers.length, s=0.5+0.5*(1-Math.pow(1-k,2));
+      ctx.save(); ctx.globalCompositeOperation="multiply"; ctx.globalAlpha=0.045; ctx.fillStyle=b.color;
+      ctx.translate(b.x,b.y); ctx.scale(s,s); ctx.beginPath();
+      const L=b.layers[b.i]; ctx.moveTo(L[0].x,L[0].y); for(const p of L) ctx.lineTo(p.x,p.y); ctx.closePath(); ctx.fill(); ctx.restore();
+      b.i++;
+    }
+    (function loop(){
+      for(let j=active.length-1;j>=0;j--){ step(active[j]); if(active[j].i>=active[j].layers.length) active.splice(j,1); }
+      requestAnimationFrame(loop);
+    })();
+    return {add};
+  }
+
+  /* ---------- hero painting ---------- */
+  const hero=document.getElementById("hero"), cv=document.getElementById("paint"), ctx=cv.getContext("2d");
+  let W=0,H=0,engine, userCount=0, ci=0;
+  const hint=document.getElementById("painthint");
+  if (matchMedia("(pointer:coarse)").matches) document.getElementById("hinttext").textContent="Tap anywhere to add color";
+  function setup(){
+    const r=hero.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2);
+    if (Math.abs(r.width-W)<2 && W) return;
+    W=r.width; H=r.height; cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+    engine = engine || blooms(ctx);
+    const a=document.getElementById("art").getBoundingClientRect(), cx=a.left-r.left+a.width/2, cy=a.top-r.top+a.height/2, R=a.width;
+    const plan=[[-.28,-.18,.36,0],[.26,.12,.38,2],[-.05,.34,.3,3],[.22,-.3,.22,1],[-.42,.2,.18,2]];
+    plan.forEach(([dx,dy,rr,c],i) => {
+      const go=()=>engine.add(cx+dx*R, cy+dy*R, rr*R, PALETTE[c], reduce);
+      reduce ? go() : setTimeout(go, 350+i*260);
+    });
+  }
+  setup();
+  addEventListener("resize", () => { const w=hero.getBoundingClientRect().width; if(Math.abs(w-W)>=2){ ctx.clearRect(0,0,W,H); W=0; setup(); } });
+  hero.addEventListener("click", e => {
+    if (e.target.closest("a,button")) return;
+    const r=hero.getBoundingClientRect(), size=Math.min(W,H)*(0.07+Math.random()*0.09);
+    engine.add(e.clientX-r.left, e.clientY-r.top, size, PALETTE[ci++%PALETTE.length], false);
+    if(++userCount===1) hint.classList.add("dirty");
+  });
+  document.getElementById("wipe").addEventListener("click", () => { ctx.clearRect(0,0,W,H); hint.classList.remove("dirty"); userCount=0; W=0; setup(); });
+
+  /* hero image: the sketchbook, painted cover as fallback */
+  const heroImg=document.getElementById("shot"), float=document.getElementById("float");
+  heroImg.alt=CONFIG.brand+" Mixed Media Sketchbook";
+  heroImg.onerror=()=>{
+    const d=document.createElement("div"); d.className="book"; d.setAttribute("role","img"); d.setAttribute("aria-label",heroImg.alt);
+    d.innerHTML='<div class="rings">'+"<i></i>".repeat(13)+'</div><h4>Mixed Media</h4><div class="spec">60 sheets · 9 × 12 in · 98 lb</div><canvas></canvas><div class="foot"><span>Acid-free · Wet &amp; dry media</span><span>MOFUNY</span></div>';
+    float.replaceChildren(d);
+    requestAnimationFrame(()=>{
+      const c=d.querySelector("canvas"), r=c.getBoundingClientRect(), dpr=Math.min(devicePixelRatio||1,2);
+      c.width=r.width*dpr; c.height=r.height*dpr; const x=c.getContext("2d"); x.setTransform(dpr,0,0,dpr,0,0);
+      const e=blooms(x), w=r.width, h=r.height;
+      [[.3,.35,.42,0],[.7,.55,.45,2],[.45,.8,.35,3],[.75,.2,.28,1]].forEach(([fx,fy,fr,c2],i)=>
+        setTimeout(()=>e.add(w*fx,h*fy,w*fr,PALETTE[c2],reduce), reduce?0:500+i*300));
+    });
+  };
+  heroImg.src=CONFIG.products[0].styles[0].image;
+
+  if(!reduce && fine){
+    const art=document.getElementById("art");
+    hero.addEventListener("pointermove", e=>{
+      const r=art.getBoundingClientRect(), x=(e.clientX-(r.left+r.width/2))/innerWidth, y=(e.clientY-(r.top+r.height/2))/innerHeight;
+      art.style.transform=`rotateY(${x*18}deg) rotateX(${-y*14}deg)`;
+    });
+    hero.addEventListener("pointerleave", ()=>art.style.transform="");
+  }
+
+  /* ---------- product configurators ---------- */
+  const slots=[], box=document.getElementById("products"), ovEl=document.getElementById("overview");
+  const GROUPS={sketchbook:"Paper", ballpoint:"Writing", erasers:"Desk and extras"};
+  CONFIG.products.forEach(prod => {
+    if(GROUPS[prod.id]){ const h=document.createElement("h3"); h.className="group"; h.textContent=GROUPS[prod.id]; box.appendChild(h); }
+    const st={ style: prod.styles[0], size: (prod.styles[0].sizes||[null])[0] };
+    const el=document.createElement("article"); el.className="cfg"; el.id="p-"+prod.id;
+    el.innerHTML=`
+      <div class="shot-wrap rv"><div class="shot"><div class="tilt"></div></div><div class="gal"></div></div>
+      <div class="info rv">
+        <h3>${esc(prod.name)}</h3>
+        <p class="intro">${esc(prod.intro)}</p>
+        ${prod.styles.length>1 ? `<fieldset class="opt"><legend>${esc(prod.optionLabel)}: <b data-k="style"></b></legend><div class="chips">${
+          prod.styles.map((s,i)=>`<button type="button" class="chip" data-i="${i}" aria-pressed="false"><i style="background:${esc(s.swatch)}"></i>${esc(s.label)}</button>`).join("")
+        }</div></fieldset>` : ""}
+        <fieldset class="opt sizewrap" hidden><legend>${esc(prod.sizeLabel||"Size")}: <b data-k="size"></b></legend><div class="chips sizes"></div></fieldset>
+        <dl data-k="specs"></dl>
+        <div class="price"><span data-k="price"></span><small>Free US shipping</small></div>
+        <div class="pp"></div>
+        <p class="note">Pay with PayPal or card.</p>
+      </div>`;
+    box.appendChild(el);
+    const $=k=>el.querySelector(`[data-k="${k}"]`);
+    const tilt=el.querySelector(".tilt"), galEl=el.querySelector(".gal");
+    const sizeWrap=el.querySelector(".sizewrap"), sizesEl=el.querySelector(".sizes");
+
+    const priceOf=()=> st.size && st.size.price!=null ? st.size.price : st.style.price;
+    const altText=()=> `${CONFIG.brand} ${prod.name}, ${st.style.label}`;
+
+    function fallback(){
+      const d=document.createElement("div");
+      d.className="ph swap"; d.style.background=st.style.swatch;
+      d.setAttribute("role","img"); d.setAttribute("aria-label",altText());
+      d.textContent=prod.name;
+      tilt.replaceChildren(d);
+    }
+    function showPhoto(src){
+      const img=new Image(); img.alt=altText(); img.className="swap"; img.src=src; img.onerror=fallback;
+      tilt.replaceChildren(img);
+      galEl.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", b.dataset.src===src));
+    }
+    /* looks for name.jpg, name-2.jpg, name-3.jpg ... and shows a thumbnail for each one it finds */
+    function buildGallery(){
+      const base=st.style.image, dot=base.lastIndexOf("."), stem=base.slice(0,dot), ext=base.slice(dot), want=base;
+      galEl.innerHTML="";
+      const tryOne=i=>new Promise(res=>{
+        const src=i===1?base:`${stem}-${i}${ext}`;
+        const probe=new Image(); probe.onload=()=>res(src); probe.onerror=()=>res(null); probe.src=src;
+      });
+      Promise.all([1,2,3,4,5,6].map(tryOne)).then(found=>{
+        if(st.style.image!==want) return;
+        const list=found.filter(Boolean);
+        if(list.length>1) galEl.innerHTML=list.map((src,i)=>
+          `<button type="button" data-src="${esc(src)}" aria-pressed="${i===0}" aria-label="Photo ${i+1}"><img src="${esc(src)}" alt="" loading="lazy"></button>`).join("");
+      });
+    }
+    galEl.addEventListener("click", e=>{ const b=e.target.closest("button"); if(b) showPhoto(b.dataset.src); });
+
+    function render(){
+      const s=st.style, sizes=s.sizes;
+      el.querySelectorAll(".chips .chip").forEach(c=>c.setAttribute("aria-pressed", prod.styles[c.dataset.i]===s));
+      if($("style")) $("style").textContent=s.label;
+      if(sizes){
+        sizeWrap.hidden=false;
+        sizesEl.innerHTML=sizes.map((z,i)=>`<button type="button" class="chip" data-i="${i}" aria-pressed="${z===st.size}">${esc(z.label)}</button>`).join("");
+        $("size").textContent=st.size.label;
+      } else sizeWrap.hidden=true;
+      const specs=[...(st.size&&st.size.specs?st.size.specs:[]), ...(s.specs||[])];
+      $("specs").innerHTML=specs.map(([k,v])=>`<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("");
+      $("price").textContent=money(priceOf());
+      showPhoto(s.image); buildGallery();
+    }
+    const chipRow=el.querySelector(".chips");
+    if(prod.styles.length>1) chipRow.addEventListener("click", e=>{
+      const b=e.target.closest(".chip"); if(!b) return;
+      const next=prod.styles[b.dataset.i]; if(next===st.style) return;
+      st.style=next; st.size=(next.sizes||[null])[0]; render();
+    });
+    sizesEl.addEventListener("click", e=>{
+      const b=e.target.closest(".chip"); if(!b) return;
+      st.size=st.style.sizes[b.dataset.i]; render();
+    });
+    render();
+    slots.push({ el: el.querySelector(".pp"), get: () => ({
+      name: `${prod.name}, ${st.style.label}${st.size?", "+st.size.label:""}`, price: priceOf() }) });
+
+    if(!reduce && fine){
+      const shot=el.querySelector(".shot");
+      shot.addEventListener("pointermove", e=>{
+        const r=shot.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+        tilt.style.transform=`rotateY(${x*12}deg) rotateX(${-y*10}deg) scale(1.03)`;
+      });
+      shot.addEventListener("pointerleave", ()=>tilt.style.transform="");
+    }
+  });
+  ovEl.innerHTML = CONFIG.products.map(p => {
+    const s0=p.styles[0];
+    const all = p.styles.flatMap(st => st.sizes ? st.sizes.map(z=>z.price) : [st.price]);
+    const from = Math.min(...all), many = Math.max(...all) > from;
+    return `<a class="ov" href="#p-${esc(p.id)}"><span class="thumb"><img src="${esc(s0.image)}" alt="" loading="lazy" onerror="this.remove()"></span>
+      <span class="nm">${esc(p.name)}</span><span class="pr">${many?"From ":""}${money(from)}</span></a>`;
+  }).join("");
+  ovEl.addEventListener("click", e => {
+    const a=e.target.closest(".ov"); if(!a) return;
+    e.preventDefault();
+    document.querySelector(a.getAttribute("href")).scrollIntoView({behavior:"smooth",block:"start"});
+  });
+
+  mountPayPal(slots);
+
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.15});
+  document.querySelectorAll(".rv").forEach(el=>io.observe(el));
+
+  document.querySelectorAll("a.mail").forEach(m=>{ m.href="mailto:"+CONFIG.email; m.textContent=CONFIG.email; });
+  document.getElementById("yr").textContent=new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
