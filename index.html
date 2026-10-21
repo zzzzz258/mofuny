@@ -20,8 +20,8 @@
    ============================================================ */
 const CONFIG = {
   brand: "MOFUNY",
-  email: "hello@example.com",
-  paypalClientId: "",
+  email: "mofuny@outlook.com",
+  paypalClientId: "BAAflq1bCGYVkI60MeJXCK4dWeEPjcAuyHlKGYd66ByIijZJn6O9Uyg1xP0F3rm5sdDvtF1yuXqEakpfyQ",
   products: [
     {
       id: "sketchbook",
@@ -33,7 +33,7 @@ const CONFIG = {
         { id:"mofuny-mixed-media", label:"Burgundy", swatch:"#5a2a22", image:"images/mofuny-mixed-media.jpg",
           specs:[["Binding","Top spiral, lies flat"],["Pages","Micro-perforated for clean removal"],["Best for","Watercolor, marker, ink, pencil"]],
           sizes:[ {label:"9 × 12 in", price:28.99, specs:[["Sheets","60"],["Paper","98 lb / 160 gsm"]]},
-                  {label:"9 × 12 in, 2-pack", price:24.99, specs:[["Sheets","60 each"],["Paper","98 lb / 160 gsm"]]},
+                  {label:"9 × 12 in, 2-pack", price:34.99, specs:[["Sheets","60 each"],["Paper","98 lb / 160 gsm"]]},
                   {label:"8.5 × 11 in", price:20.99, specs:[["Sheets","50"],["Paper","110 lb / 180 gsm"]]},
                   {label:"11 × 14 in", price:27.99, specs:[["Sheets","50"],["Paper","110 lb / 180 gsm"]]} ] }
       ]
@@ -380,6 +380,31 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
 .ph{width:72%;aspect-ratio:1/1;border-radius:12px;display:grid;place-items:center;text-align:center;font:400 1.1rem/1.3 var(--display);color:#fff;padding:12%}
 .rv{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.1,1)}
 .rv.in{opacity:1;transform:none}
+.cart-open{font:600 .9rem/1 var(--sans);border:1px solid #dfd4cc;background:#fff;color:var(--ink);padding:10px 15px;border-radius:999px;cursor:pointer}
+.cart-open b{display:inline-grid;place-items:center;min-width:22px;height:22px;margin-left:6px;padding:0 6px;border-radius:999px;background:var(--maroon);color:#fff;font-size:.75rem}
+.addcart{width:100%;margin-top:8px}
+.cart-backdrop{position:fixed;inset:0;z-index:50;background:rgba(42,29,26,.38);opacity:0;pointer-events:none;transition:opacity .25s}
+.cart-backdrop.open{opacity:1;pointer-events:auto}
+.cart{position:fixed;z-index:51;top:0;right:0;width:min(460px,100%);height:100dvh;background:#fff;box-shadow:-24px 0 60px rgba(42,29,26,.16);transform:translateX(102%);transition:transform .3s ease;display:flex;flex-direction:column}
+.cart.open{transform:none}
+.cart-head,.cart-foot{padding:22px 24px;border-bottom:1px solid #eee5dd;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.cart-head h2{margin:0;font:400 1.65rem/1.1 var(--display)}
+.cart-close{border:0;background:none;font-size:1.7rem;cursor:pointer;color:var(--ink)}
+.cart-items{flex:1;overflow:auto;padding:8px 24px}
+.cart-row{display:grid;grid-template-columns:1fr auto;gap:8px 16px;padding:18px 0;border-bottom:1px solid #eee5dd}
+.cart-row h3{margin:0 0 5px;font:600 1rem/1.3 var(--sans)}
+.cart-row p{margin:0;color:var(--muted);font-size:.88rem}
+.cart-row .lineprice{font-weight:600;white-space:nowrap}
+.qty{display:flex;align-items:center;gap:10px;margin-top:12px}
+.qty button{border:1px solid #dfd4cc;background:#fff;border-radius:999px;cursor:pointer;width:30px;height:30px}
+.qty .remove{width:auto;height:auto;padding:3px 0;margin-left:4px;border:0;border-radius:0;background:transparent;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.qty .remove:hover{color:var(--maroon)}
+.cart-empty{padding:44px 0;text-align:center;color:var(--muted)}
+.cart-foot{border-top:1px solid #eee5dd;border-bottom:0;display:block}
+.cart-total{display:flex;justify-content:space-between;font-size:1.12rem;margin-bottom:14px}
+.cart-foot .note{margin:10px 0 0;text-align:center}
+.cart-msg{margin:10px 0 0;color:var(--muted);font-size:.9rem}
+body.cart-lock{overflow:hidden}
 @media (max-width:900px){
   .cfg{grid-template-columns:1fr;gap:26px;padding:40px 0}
   .cfg .shot-wrap{position:relative;top:0}
@@ -392,7 +417,7 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
 <header>
   <div class="wrap">
     <a class="logo" href="#top">MOFUNY</a>
-    <nav><a href="#shop">Shop</a><a href="#about">About</a><a href="#help">Shipping &amp; returns</a><a href="#contact">Contact</a></nav>
+    <nav><a href="#shop">Shop</a><a href="#about">About</a><a href="#help">Shipping &amp; returns</a><a href="#contact">Contact</a><button class="cart-open" type="button">Cart <b id="cartCount">0</b></button></nav>
   </div>
 </header>
 
@@ -487,35 +512,52 @@ fieldset{border:0;padding:0;margin:0;min-width:0}
   </section>
 </main>
 
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<aside class="cart" id="cart" aria-label="Shopping cart" aria-hidden="true">
+  <div class="cart-head"><h2>Your cart</h2><button class="cart-close" type="button" aria-label="Close cart">×</button></div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-foot">
+    <div class="cart-total"><strong>Total</strong><strong id="cartTotal">$0.00</strong></div>
+    <div id="paypalCart"></div>
+    <p class="cart-msg" id="cartMsg"></p>
+    <p class="note">Free US shipping. Pay with PayPal or card.</p>
+  </div>
+</aside>
+
 <footer><div class="wrap"><span>© <span id="yr"></span> MOFUNY. All rights reserved.</span><a class="mail" href="#"></a></div></footer>
 
-<script>/* ---------- PayPal checkout ---------- */
-/* slots: [{el, get: () => ({name, price})}] — price is read at click time, so it follows the current selection */
-function mountPayPal(slots){
+<script>/* ---------- PayPal cart checkout ---------- */
+function mountPayPal(getCart, onPaid){
   const id = (CONFIG.paypalClientId || "").trim();
+  const el = document.getElementById("paypalCart");
   if (!id) {
-    slots.forEach(({el}) => el.innerHTML = '<a class="btn" aria-disabled="true" role="link"><span>Checkout opening soon</span></a>');
+    el.innerHTML = '<a class="btn" aria-disabled="true" role="link"><span>Checkout opening soon</span></a>';
     return;
   }
   const s = document.createElement("script");
   s.src = "https://www.paypal.com/sdk/js?client-id=" + encodeURIComponent(id) + "&currency=USD&components=buttons&enable-funding=card";
-  s.onload = () => slots.forEach(({el, get}) => {
+  s.onload = () => {
     paypal.Buttons({
-      style: { layout: "vertical", shape: "pill", label: "buynow", height: 48 },
-      createOrder: (d, actions) => { const it = get(); return actions.order.create({
-        purchase_units: [{ description: (CONFIG.brand + " " + it.name).slice(0,127), amount: { currency_code: "USD", value: Number(it.price).toFixed(2) } }],
+      style: { layout: "vertical", shape: "pill", label: "checkout", height: 48 },
+      createOrder: (d, actions) => {
+        const cart=getCart();
+        if(!cart.length) return Promise.reject(new Error("Cart is empty"));
+        const total=cart.reduce((n,it)=>n+it.price*it.qty,0).toFixed(2);
+        return actions.order.create({
+        purchase_units: [{ description: (CONFIG.brand + " order").slice(0,127), items: cart.map(it=>({name:it.name.slice(0,127),quantity:String(it.qty),unit_amount:{currency_code:"USD",value:Number(it.price).toFixed(2)}})), amount: { currency_code: "USD", value: total, breakdown:{item_total:{currency_code:"USD",value:total}} } }],
         application_context: { shipping_preference: "GET_FROM_FILE", brand_name: CONFIG.brand }
       }); },
       onShippingAddressChange: (data, actions) => {
         if (data.shippingAddress && data.shippingAddress.countryCode !== "US") return actions.reject(data.errors && data.errors.COUNTRY_ERROR);
       },
       onApprove: (d, actions) => actions.order.capture().then(() => {
+        onPaid();
         el.innerHTML = '<p class="thanks"><b>Order confirmed.</b> PayPal has emailed your receipt. We ship within 1–2 business days.</p>';
       }),
-      onError: () => { el.insertAdjacentHTML("beforeend", '<p class="note">Payment didn\'t go through. Please try again or email ' + CONFIG.email + '.</p>'); }
+      onError: () => { document.getElementById("cartMsg").textContent = "Payment didn't go through. Please try again or email " + CONFIG.email + "."; }
     }).render(el);
-  });
-  s.onerror = () => slots.forEach(({el}) => el.innerHTML = '<p class="note">Checkout couldn\'t load. Refresh the page or email ' + CONFIG.email + '.</p>');
+  };
+  s.onerror = () => el.innerHTML = '<p class="note">Checkout couldn\'t load. Refresh the page or email ' + CONFIG.email + '.</p>';
   document.head.appendChild(s);
 }
 (function(){
@@ -621,7 +663,24 @@ function mountPayPal(slots){
   }
 
   /* ---------- product configurators ---------- */
-  const slots=[], box=document.getElementById("products"), ovEl=document.getElementById("overview");
+  const box=document.getElementById("products"), ovEl=document.getElementById("overview");
+  let cart=[];
+  try{ cart=JSON.parse(localStorage.getItem("mofuny-cart")||"[]"); if(!Array.isArray(cart)) cart=[]; }catch(e){ cart=[]; }
+  const cartEl=document.getElementById("cart"), backdrop=document.getElementById("cartBackdrop"), cartItems=document.getElementById("cartItems");
+  const saveCart=()=>localStorage.setItem("mofuny-cart",JSON.stringify(cart));
+  function openCart(){cartEl.classList.add("open");backdrop.classList.add("open");cartEl.setAttribute("aria-hidden","false");document.body.classList.add("cart-lock");}
+  function closeCart(){cartEl.classList.remove("open");backdrop.classList.remove("open");cartEl.setAttribute("aria-hidden","true");document.body.classList.remove("cart-lock");}
+  function renderCart(){
+    const count=cart.reduce((n,it)=>n+it.qty,0), total=cart.reduce((n,it)=>n+it.price*it.qty,0);
+    document.getElementById("cartCount").textContent=count;
+    document.getElementById("cartTotal").textContent=money(total);
+    cartItems.innerHTML=cart.length?cart.map((it,i)=>`<div class="cart-row" data-i="${i}"><div><h3>${esc(it.name)}</h3><p>${money(it.price)} each</p><div class="qty"><button type="button" data-act="minus" aria-label="Decrease quantity">−</button><span>${it.qty}</span><button type="button" data-act="plus" aria-label="Increase quantity">+</button><button class="remove" type="button" data-act="remove">Remove</button></div></div><div class="lineprice">${money(it.price*it.qty)}</div></div>`).join(""):'<p class="cart-empty">Your cart is empty.</p>';
+    document.getElementById("paypalCart").style.display=cart.length?"block":"none";
+    saveCart();
+  }
+  document.querySelector(".cart-open").addEventListener("click",openCart);
+  document.querySelector(".cart-close").addEventListener("click",closeCart);backdrop.addEventListener("click",closeCart);
+  cartItems.addEventListener("click",e=>{const b=e.target.closest("button[data-act]");if(!b)return;const i=Number(b.closest(".cart-row").dataset.i),a=b.dataset.act;if(a==="plus")cart[i].qty++;if(a==="minus")cart[i].qty=Math.max(1,cart[i].qty-1);if(a==="remove")cart.splice(i,1);renderCart();});
   const GROUPS={sketchbook:"Paper", ballpoint:"Writing", erasers:"Desk and extras"};
   CONFIG.products.forEach(prod => {
     if(GROUPS[prod.id]){ const h=document.createElement("h3"); h.className="group"; h.textContent=GROUPS[prod.id]; box.appendChild(h); }
@@ -638,8 +697,8 @@ function mountPayPal(slots){
         <fieldset class="opt sizewrap" hidden><legend>${esc(prod.sizeLabel||"Size")}: <b data-k="size"></b></legend><div class="chips sizes"></div></fieldset>
         <dl data-k="specs"></dl>
         <div class="price"><span data-k="price"></span><small>Free US shipping</small></div>
-        <div class="pp"></div>
-        <p class="note">Pay with PayPal or card.</p>
+        <button class="btn addcart" type="button">Add to cart</button>
+        <p class="note">Free US shipping. Pay securely at checkout.</p>
       </div>`;
     box.appendChild(el);
     const $=k=>el.querySelector(`[data-k="${k}"]`);
@@ -703,8 +762,13 @@ function mountPayPal(slots){
       st.size=st.style.sizes[b.dataset.i]; render();
     });
     render();
-    slots.push({ el: el.querySelector(".pp"), get: () => ({
-      name: `${prod.name}, ${st.style.label}${st.size?", "+st.size.label:""}`, price: priceOf() }) });
+    el.querySelector(".addcart").addEventListener("click",()=>{
+      const name=`${prod.name}, ${st.style.label}${st.size?", "+st.size.label:""}`;
+      const key=`${prod.id}|${st.style.id}|${st.size?st.size.label:""}`;
+      const found=cart.find(it=>it.key===key);
+      if(found) found.qty++; else cart.push({key,name,price:Number(priceOf()),qty:1});
+      renderCart();openCart();
+    });
 
     if(!reduce && fine){
       const shot=el.querySelector(".shot");
@@ -729,7 +793,8 @@ function mountPayPal(slots){
     document.querySelector(a.getAttribute("href")).scrollIntoView({behavior:"smooth",block:"start"});
   });
 
-  mountPayPal(slots);
+  renderCart();
+  mountPayPal(()=>cart,()=>{cart=[];renderCart();});
 
   const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} }),{threshold:.15});
   document.querySelectorAll(".rv").forEach(el=>io.observe(el));
